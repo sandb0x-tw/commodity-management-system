@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 
 from .controllers import user_bp, admin_bp, admin_api_bp
 from .models import Base
+from .repositories import ProductRepository, TagRepository, ImageRepository
 
 def create_app(config_name):
     app = Flask(__name__, template_folder='views')
@@ -16,6 +17,11 @@ def create_app(config_name):
             f"@{app.config.get('DB_HOST')}/{app.config.get('DB_NAME')}"
     )
     Base.metadata.create_all(app.sql_engine)
+
+    # Repository Initialization
+    app.product_repository = ProductRepository(app.sql_engine)
+    app.tag_repository = TagRepository(app.sql_engine)
+    app.image_repository = ImageRepository(app.sql_engine)
 
     # Blueprints Registration
     app.register_blueprint(user_bp)
