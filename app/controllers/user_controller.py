@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template
+import os
+from flask import Blueprint, render_template, send_file
 
 user_bp = Blueprint('user', __name__)
 
@@ -8,3 +9,8 @@ def home():
                            title="Test",
                            content="This is a test content.",
                            footer="Test Website")
+
+@user_bp.route('/imgs/<string:src>')
+def img_download(src):
+    path = os.path.join('../data/images', src)
+    return send_file(path, as_attachment=False)

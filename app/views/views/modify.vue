@@ -1,5 +1,5 @@
 <template>
-    <form action="/api/problems/{{ problem_id  }}" method="POST" enctype="multipart/form-data">
+    <form action="/api/products/{{ product_id  }}" method="POST" enctype="multipart/form-data">
         <label>商品名稱：</label><input name="name" v-model="name" class="border w-1/2 border-gray-400" /><br/><br/>
         <label>商品標籤（用空白隔開）：</label><input name="tags" v-model="tags" class="border w-1/2 border-gray-400" /><br/><br/>
         <hr/>
@@ -8,7 +8,7 @@
         <div class="grid grid-cols-12">
             <input name="removedImageInfo" class="hidden" v-model="removedImageInfo" />
             <div class="m-4 col-span-12 sm:col-span:6 md:col-span-4 lg:col-span-3" v-for="(input, index) in existingImages" :key="index">
-              <button @click="delImage(index)">移除此圖片</button>
+              <a href="#" @click="delImage(index)">移除此圖片</a>
               <div v-if="input.url">
                 <img :src="input.url" alt="圖片預覽">
               </div>

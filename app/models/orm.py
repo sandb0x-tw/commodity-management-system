@@ -1,6 +1,6 @@
 # pylint: disable=too-few-public-methods
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -24,6 +24,7 @@ class Product(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(256), nullable=False)
     description = Column(String(8192))
+    visible = Column(Boolean, default=False)
 
     tags = relationship('Tag', secondary=PRODUCT_TAG_ASSOCIATION, back_populates='products')
     images = relationship('Image', secondary=PRODUCT_IMAGE_ASSOCIATION, back_populates='products')

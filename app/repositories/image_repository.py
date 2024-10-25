@@ -6,7 +6,7 @@ class ImageRepository:
     def __init__(self, sql_engine):
         self.db_session = scoped_session(sessionmaker(bind=sql_engine))
 
-    def add_image(self, name, product_id):
+    def add(self, name, product_id):
         new_image = Image(name=name)
         product = self.db_session.query(Product).get(product_id)
         if product:
@@ -16,7 +16,7 @@ class ImageRepository:
             return product.id
         return False
 
-    def delete_image(self, image_id):
+    def delete(self, image_id):
         image = self.db_session.query(Image).get(image_id)
         if not image:
             return False
