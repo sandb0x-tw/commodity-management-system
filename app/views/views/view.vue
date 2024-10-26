@@ -7,7 +7,7 @@
     <div v-if="product_data.hasOwnProperty('images') && product_data.images.length > 1" id="custom-controls-gallery" class="relative w-full" data-carousel="static">
 		<div class="relative h-56 overflow-hidden rounded-lg md:h-96">
 			<div class="hidden duration-700 ease-in-out" data-carousel-item v-for="image in product_data.images">
-                <img :src="image" class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="圖片預覽">
+                <img :src="image" class="absolute block max-w-full max-h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="圖片預覽">
 			</div>
 		</div>
 		<div class="flex justify-center items-center pt-4">
