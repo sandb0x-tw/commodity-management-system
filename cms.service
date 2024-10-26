@@ -1,0 +1,11 @@
+[Unit]
+Description=My WSGI Python Service
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/opt/cms/cms/service
+ExecStart=/opt/cms/venv/bin/gunicorn --bind 0.0.0.0:8000 main:app
+
+[Install]
+WantedBy=multi-user.target
