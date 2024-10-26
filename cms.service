@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User=root
-WorkingDirectory=/opt/cms/cms/service
+WorkingDirectory=/opt/cms/cms/
 ExecStart=/opt/cms/venv/bin/gunicorn --bind 0.0.0.0:8000 main:app
 
 [Install]

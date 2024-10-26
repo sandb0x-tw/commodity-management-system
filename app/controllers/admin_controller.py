@@ -41,4 +41,3 @@ def modify_item(product_id):
                            visible=str(product['visible']).lower(),
                            existingImages=json.dumps(existing_images),
                            description=json.dumps(product['description']))
-   

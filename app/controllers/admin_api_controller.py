@@ -85,5 +85,4 @@ def modify_item_api(product_id):
 @admin_api_bp.route('/products/<int:product_id>/delete/', methods=['GET', 'DELETE'])
 def delete_item_api(product_id):
     current_app.product_repository.delete(product_id)
-    return redirect(f"/manage")
-
+    return redirect("/manage")

@@ -24,7 +24,7 @@ def list_products():
             item['image'] = f'/imgs/{product["images"][0][1]}'
 
         items.append(item)
-    
+
     g.title = "主頁"
     return render_template('views/list.vue',
                            items=json.dumps(items))
@@ -59,7 +59,7 @@ def list_products_by_category():
     return render_template('views/category.vue',
                            items=items,
                            tags=tags)
-    
+
 @user_bp.route('/product/<int:product_id>')
 def view(product_id):
     product_data = current_app.product_repository.get(product_id)
