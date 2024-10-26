@@ -4,7 +4,7 @@
             <a :href=`/product/${item.id}`>
                 <div class="aspect-square">
                     <p class="text-xl">{{ item.name }}</p>
-                    <img :src="item.image" alt="圖片預覽" class="w-full h-full object-cover">
+                    <img v-if="item.image" :src="item.image" alt="圖片預覽" class="w-full h-full object-cover">
                 </div>
             </a>
             <span v-for="tag in item.tags" class="px-1">
