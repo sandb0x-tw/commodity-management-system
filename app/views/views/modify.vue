@@ -34,7 +34,8 @@
         <hr/>
         <br/>
         <textarea rows="10" name="description" v-model="description" class="w-full border border-gray-400"></textarea>
-        <button class="float-right border border-gray-400 p-2 hover:text-gray-400" type="submit">Submit</button>
+        <a href="/api/products/[[ product_id ]]/delete" class="button float-left border border-gray-400 p-2 hover:text-gray-400" type="submit">刪除</a>
+        <button class="float-right border border-gray-400 p-2 hover:text-gray-400" type="submit">提交</button>
     </form>
 </template>
 

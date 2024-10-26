@@ -28,11 +28,18 @@ class TagRepository:
             return True
         return False
 
-    def get_products_by_tag(self, tag_id):
-        tag = self.db_session.query(Tag).get(tag_id)
-        if not tag:
-            return []
-        return [product_to_dict(product) for product in tag.products if product.visible]
+    def get_products_by_tag(self, tag_id, page=0, per_page=30):
+        offset_value = page * per_page
+        products = (
+            self.db_session.query(Product)
+            .join(Tag.products)
+            .filter(Tag.id == tag_id, Product.visible == True)
+            .limit(per_page)
+            .offset(offset_value)
+            .all()
+        )
+
+        return [product_to_dict(product) for product in products]
 
     def clear_product_tags(self, product_id):
         product = self.db_session.query(Product).get(product_id)

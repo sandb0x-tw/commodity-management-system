@@ -1,4 +1,5 @@
 import hashlib
+import json
 import os
 import bcrypt
 from flask import Blueprint, request, current_app, redirect, make_response
@@ -8,9 +9,9 @@ admin_api_bp = Blueprint('admin_api', __name__)
 @admin_api_bp.route('/login/', methods=['POST'])
 def login_api():
     response = make_response(redirect('/manage/'))
-    user_password = current_app.json_config['password']
-    form_password = request.form.get('password')
-    if user_password == '' or bcrypt.checkpw(user_password, form_password.encode('utf-8')):
+    user_password = current_app.json_config['password'].encode('utf-8')
+    form_password = request.form.get('password').encode('utf-8')
+    if user_password == '' or bcrypt.checkpw(form_password, user_password):
         response.set_cookie(
             'jwt',
             current_app.authenticate_service.issue_token({'admin': True}),
@@ -18,13 +19,29 @@ def login_api():
         )
     return response
 
+@admin_api_bp.route('/passwd', methods=['POST', 'PUT'])
+def passwd_api():
+    form_password = request.form.get('password').encode('utf-8')
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(form_password, salt).decode('utf-8')
+    current_app.json_config['password'] = hashed_password
+    with open('./data/config.json', 'w', encoding='utf-8') as f:
+        f.write(json.dumps(current_app.json_config))
+    return redirect('/manage')
 
-@admin_api_bp.route('/product/', methods=['POST'])
+@admin_api_bp.route('/products/', methods=['GET', 'POST'])
 def create_item_api():
-    return {
-        "successful": True,
-        "id": current_app.product_repository.create("New Product", "")
-    }
+    product_id = current_app.product_repository.create("New Product", "")
+    return redirect(f"/modify/{product_id}")
+
+@admin_api_bp.route('/modify_website/', methods=['POST', 'PUT'])
+def modify_website_info():
+    current_app.json_config['title'] = request.form.get('title')
+    current_app.json_config['footer'] = request.form.get('footer')
+    current_app.json_config['description'] = request.form.get('description')
+    with open('./data/config.json', 'w', encoding='utf-8') as f:
+        f.write(json.dumps(current_app.json_config))
+    return redirect('/manage')
 
 @admin_api_bp.route('/products/<int:product_id>', methods=['PUT', 'POST'])
 def modify_item_api(product_id):
@@ -64,3 +81,9 @@ def modify_item_api(product_id):
             tags.add(tag)
 
     return redirect(f'/modify/{product_id}')
+
+@admin_api_bp.route('/products/<int:product_id>/delete/', methods=['GET', 'DELETE'])
+def delete_item_api(product_id):
+    current_app.product_repository.delete(product_id)
+    return redirect(f"/manage")
+
