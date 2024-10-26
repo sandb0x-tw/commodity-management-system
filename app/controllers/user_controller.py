@@ -25,7 +25,6 @@ def list_products():
 
         items.append(item)
 
-    g.title = "主頁"
     return render_template('views/list.vue',
                            items=json.dumps(items))
 
