@@ -33,7 +33,7 @@ class TagRepository:
         products = (
             self.db_session.query(Product)
             .join(Tag.products)
-            .filter(Tag.id == tag_id, Product.visible is True)
+            .filter(Tag.id == tag_id, Product.visible)
             .limit(per_page)
             .offset(offset_value)
             .all()
