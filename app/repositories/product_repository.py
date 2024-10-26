@@ -1,4 +1,5 @@
 from sqlalchemy.orm import sessionmaker, scoped_session
+from .utils import product_to_dict
 from ..models import Product
 
 
@@ -12,14 +13,13 @@ class ProductRepository:
         self.db_session.commit()
         return new_product.id
 
-    def update(self, product_id, name=None, description=None):
+    def update(self, product_id, name=None, description=None, visible=False):
         product = self.db_session.query(Product).get(product_id)
         if not product:
             return False
-        if name:
-            product.name = name
-        if description:
-            product.description = description
+        product.name = name
+        product.description = description
+        product.visible = visible
         self.db_session.commit()
         return True
 
@@ -31,36 +31,24 @@ class ProductRepository:
         self.db_session.commit()
         return True
 
-    def get_images(self, product_id):
-        product = self.db_session.query(Product).get(product_id)
-        if not product:
-            return []
-        return [(image.id, image.name) for image in product.images]
-
-    def get_tags(self, product_id):
-        product = self.db_session.query(Product).get(product_id)
-        if not product:
-            return []
-        return [tag.name for tag in product.tags]
-
-    def __product_to_dict(self, product):
-        return {
-            'id': product.id,
-            'name': product.name,
-            'description': product.description,
-            'visible': product.visible
-        }
-
     def get(self, product_id):
         product = self.db_session.query(Product).get(product_id)
         if not product:
             return None
-        return self.__product_to_dict(product)
+        return product_to_dict(product)
 
-    def list_all_products(self):
-        products = self.db_session.query(Product).all()
-        return [self.__product_to_dict(product) for product in products]
+    def list_all(self, page=0, per_page=30):
+        offset_value = page * per_page
+        products = self.db_session.query(Product).limit(per_page).offset(offset_value).all()
+        return [product_to_dict(product) for product in products]
 
-    def list_visible_products(self):
-        products = self.db_session.query(Product).filter_by(visible=True).all()
-        return [self.__product_to_dict(product) for product in products]
+    def list_visible(self, page=0, per_page=30):
+        offset_value = page * per_page
+        products = (
+            self.db_session.query(Product)
+                .filter_by(visible=True)
+                .limit(per_page)
+                .offset(offset_value)
+                .all()
+        )
+        return [product_to_dict(product) for product in products]

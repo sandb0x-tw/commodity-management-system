@@ -11,6 +11,8 @@ class Config:
     DB_PASSWORD = os.getenv('DB_PASSWORD')
     DB_NAME = os.getenv('DB_NAME')
 
+    JWT_SECRET = os.getenv('JWT_SECRET')
+
     DEBUG = False
     ALLOW_CORS = False
 
