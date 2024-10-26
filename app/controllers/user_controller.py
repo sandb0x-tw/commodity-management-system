@@ -78,3 +78,7 @@ def view(product_id):
 def img_download(src):
     path = os.path.join('../data/images', src)
     return send_file(path, as_attachment=False)
+
+@user_bp.route('/favicon')
+def favicon_download():
+    return send_file('../data/icon.ico', as_attachment=False)
