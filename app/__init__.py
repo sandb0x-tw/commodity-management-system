@@ -1,6 +1,7 @@
 import json
 
 from flask import Flask
+from flask_apscheduler import APScheduler
 from sqlalchemy import create_engine
 
 from .controllers import user_bp, admin_bp, admin_api_bp
@@ -38,4 +39,12 @@ def create_app(config_name):
     # Others Initialization
     with open('./data/config.json', 'r', encoding='utf-8') as f:
         app.json_config = json.loads(f.read())
+
+    scheduler = APScheduler()
+    scheduler.add_job(id="sql_hearbeat",
+                      func=lambda app, query='SELECT 1': app.sql_engine.execute(query),
+                      trigger='interval',
+                      minutes=1,
+                      args=(app,))
+    scheduler.init_app(app)
     return app
