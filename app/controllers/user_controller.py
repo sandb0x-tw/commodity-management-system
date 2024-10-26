@@ -25,6 +25,8 @@ def list_products():
 
         items.append(item)
 
+    g.title = "主頁"
+
     return render_template('views/list.vue',
                            items=json.dumps(items))
 
@@ -38,6 +40,7 @@ def about():
 @response_decorator
 def list_products_by_category():
     category = request.args.get('category', None)
+    g.title = category if category else "類別篩選"
     page = request.args.get('page', "0")
     items = []
     if category:
@@ -60,17 +63,15 @@ def list_products_by_category():
                            tags=tags)
 
 @user_bp.route('/product/<int:product_id>')
+@response_decorator
 def view(product_id):
     product_data = current_app.product_repository.get(product_id)
     if product_data is not None and product_data['visible']:
         for i in range(len(product_data['images'])):
             product_data['images'][i] = f'/imgs/{product_data["images"][i][1]}'
         del product_data['visible']
-        vue = render_template('views/view.vue', product_data=product_data)
-        return render_template('main.html',
-                               title="Test",
-                               content=vue,
-                               footer="Test Website")
+        g.title = product_data['name']
+        return render_template('views/view.vue', product_data=product_data)
     abort(404)
 
 @user_bp.route('/imgs/<string:src>')

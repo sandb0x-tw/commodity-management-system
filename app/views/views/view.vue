@@ -30,7 +30,7 @@
 		</div>
 	</div>
     <div class="container">
-        <img v-if="product_data.hasOwnProperty('images') && product_data.images.length == 1" :src="product_data.images[0]" class="mx-auto" alt="圖片預覽">
+        <img v-if="product_data.hasOwnProperty('images') && product_data.images.length == 1" :src="product_data.images[0]" class="mx-auto w-2/3 sm:w-1/3" alt="圖片預覽">
     </div>
     <br/>
     <hr/>
