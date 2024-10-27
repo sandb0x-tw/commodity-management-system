@@ -1,4 +1,6 @@
+# pylint: disable=R0801
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.exc import SQLAlchemyError
 from .utils import product_to_dict
 from ..models import Product
 
