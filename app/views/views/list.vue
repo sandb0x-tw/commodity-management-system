@@ -8,7 +8,7 @@
                 </div>
             </a>
             <span v-for="tag in item.tags" class="px-1">
-                <a :href=`/category/?${tag}`>{{ tag }}</a>
+                <a :href=`/category/?category=${tag}`>{{ tag }}</a>
             <span>
         </div>
     </div>
