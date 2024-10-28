@@ -8,6 +8,6 @@ services:
       MYSQL_USER: cms
       MYSQL_PASSWORD: abc123
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - ./data/mysql_data:/var/lib/mysql
