@@ -2,10 +2,11 @@
 
 
 up:
+	docker compose build
 	docker compose up -d
 
 down:
 	docker compose down
 
 lint:
-	pylint ./ --recursive=true
+	pylint ./cms/src --recursive=true

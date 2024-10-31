@@ -7,7 +7,20 @@ services:
       MYSQL_DATABASE: cms
       MYSQL_USER: cms
       MYSQL_PASSWORD: abc123
-    ports:
-      - "127.0.0.1:3306:3306"
     volumes:
       - ./data/mysql_data:/var/lib/mysql
+  app:
+    build:
+      context: ./cms
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/config.json:/app/data/config.json
+      - ./data/images:/app/data/images
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: "mysql:3306"
+      JWT_SECRET: ""
+    entrypoint: ["sh", "-c", "./wait-for-it.sh mysql:3306 -- gunicorn --bind 0.0.0.0:8000 main:app"]
